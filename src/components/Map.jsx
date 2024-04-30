@@ -12,28 +12,36 @@ import { useEffect, useState } from "react";
 import { useCities } from "../contexts/CitiesContext";
 import { useGeolocation } from "../hooks/useGeolocation";
 import Button from "./Button";
+import { useUrlPosition } from "../hooks/useUrlPosition";
 
 function Map() {
   const { cities } = useCities();
   const [mapPosition, setMapPosition] = useState([40, 0]);
-  const [searchParams] = useSearchParams();
   const {
     isLoading: isLoadingPosition,
     position: geolocationPosition,
     getPosition,
   } = useGeolocation();
-
-  const mapLat = searchParams.get("lat");
-  const mapLng = searchParams.get("lng");
+  const [mapLat, mapLng] = useUrlPosition();
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     if (mapLat && mapLng) setMapPosition([mapLat, mapLng]);
   }, [mapLat, mapLng]);
 
-  useEffect(() => {
-    if (geolocationPosition)
-      setMapPosition([geolocationPosition.lat, geolocationPosition.lng]);
-  }, [geolocationPosition]);
+  useEffect(
+    () => {
+      if (geolocationPosition) {
+        setMapPosition([geolocationPosition.lat, geolocationPosition.lng]);
+        setSearchParams({
+          lat: geolocationPosition.lat,
+          lng: geolocationPosition.lng,
+        });
+      }
+    },
+    //eslint-disable-next-line
+    [geolocationPosition]
+  );
 
   return (
     <div className={styles.mapContainer}>
