@@ -16,6 +16,7 @@ import City from "./components/City";
 import Form from "./components/Form";
 import SpinnerFullPage from "./components/SpinnerFullPage";
 import { Suspense, lazy } from "react";
+import { polyfillCountryFlagEmojis } from "country-flag-emoji-polyfill";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
 const Pricing = lazy(() => import("./pages/Pricing"));
@@ -25,6 +26,8 @@ const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const Login = lazy(() => import("./pages/Login"));
 
 function App() {
+  polyfillCountryFlagEmojis();
+
   return (
     <AuthProvider>
       <CitiesProvider>
