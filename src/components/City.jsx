@@ -18,13 +18,9 @@ function City() {
 
   const { currentCity, getCity, isLoading } = useCities();
 
-  useEffect(
-    () => {
-      getCity(id);
-    },
-    //eslint-disable-next-line
-    [id]
-  );
+  useEffect(() => {
+    getCity(id);
+  }, [id, getCity]);
 
   const { cityName, emoji, date, notes } = currentCity;
 
